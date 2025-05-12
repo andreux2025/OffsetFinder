@@ -238,7 +238,7 @@ static void FindEngineCreateNetDriver()
 	if (!Scanner.Get())
 		Scanner = Memcury::Scanner::FindPattern("E8 ? ? ? ? 48 89 86 ? ? ? ? 48 85 C0 0F 84 ? ? ? ? 48 89 5C 24 ? 48 8D 05");
 
-	Offsets::EngineCreateNetDriver = Scanner.Get() ? Scanner.RelativeOffset(1).Get() : 0;
+	Offsets::EngineCreateNetDriver = Scanner.Get() ? Scanner.RelativeOffset(1).Get() : -1;
 }
 
 static void FindGetWorldContextFromObject()

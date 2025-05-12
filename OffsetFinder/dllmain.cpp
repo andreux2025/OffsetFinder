@@ -37,7 +37,16 @@ void Main()
     endHeader();
 
     BeginFuncsFile();
-    AppendFunc("CreateNetDriver", "UNetDriver*", "SDK::UEngine*, SDK::UWorld*, SDK::FName", "Addresses::CreateNetDriver");
+    if (Offsets::EngineCreateNetDriver != -1)
+    {
+        AppendFunc("CreateNetDriver", "UNetDriver*", "SDK::UEngine*, SDK::UWorld*, SDK::FName", "Addresses::CreateNetDriver");
+    }
+    else
+    {
+        AppendFunc("GetWorldFromContextObject", "void*", "SDK::UEngine*, SDK::UWorld*", "Addresses::GetWorldFromContextObject");
+        AppendFunc("CreateNetDriver_Local", "UNetDriver*","SDK::UEngine*, void* WorldContext, FName", "Addresses::CreateNetDriver_Local");
+    }
+
     AppendFunc("InitListen", "bool", "SDK::UNetDriver*, SDK::UWorld*, SDK::FURL&, bool, FString", "Addresses::InitListen");
     AppendFunc("ServerReplicateActors", "void", "SDK::UReplicationDriver*, float", "Addresses::ServerReplicateActors");
     AppendFunc("SetWorld", "void", "SDK::UNetDriver*, SDK::UWorld*", "Addresses::SetWorld");
