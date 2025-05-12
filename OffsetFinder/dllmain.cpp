@@ -43,7 +43,7 @@ void Main()
     }
     else
     {
-        AppendFunc("GetWorldFromContextObject", "void*", "SDK::UEngine*, SDK::UWorld*", "Addresses::GetWorldFromContextObject");
+        AppendFunc("GetWorldFromContextObject", "void*", "SDK::UEngine*, SDK::UWorld*", "Addresses::GetWorldContextFromObject");
         AppendFunc("CreateNetDriver_Local", "UNetDriver*","SDK::UEngine*, void* WorldContext, FName", "Addresses::CreateNetDriver_Local");
     }
 
