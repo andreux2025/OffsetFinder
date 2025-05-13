@@ -21,6 +21,7 @@ void Main()
     Append("SetWorld", Offsets::NetDriverSetWorld - SDK::UE::Memory::GetBaseAddress());
     Append("ActorNetMode", Offsets::ActorNetMode - SDK::UE::Memory::GetBaseAddress(), true);
     Append("ChangeGameSessionId", Offsets::GameSessionIdPatch - SDK::UE::Memory::GetBaseAddress(), true);
+    Append("ApplyCharacterCustomization", Offsets::ApplyCharacterCustomization - SDK::UE::Memory::GetBaseAddress(), true);
 
     if (Offsets::EngineCreateNetDriver != -1) {
         Append("CreateNetDriver", Offsets::EngineCreateNetDriver - SDK::UE::Memory::GetBaseAddress());
@@ -50,6 +51,7 @@ void Main()
     AppendFunc("InitListen", "bool", "SDK::UNetDriver*, SDK::UWorld*, SDK::FURL&, bool, FString", "Addresses::InitListen");
     AppendFunc("ServerReplicateActors", "void", "SDK::UReplicationDriver*, float", "Addresses::ServerReplicateActors");
     AppendFunc("SetWorld", "void", "SDK::UNetDriver*, SDK::UWorld*", "Addresses::SetWorld");
+    AppendFunc("ApplyCharacterCustomization", "void", "SDK::APlayerState*, SDK::APawn*", "Addresses::ApplyCharacterCustomization");
     EndFuncHeader();
 
     Log("Finished Generating Headers.");

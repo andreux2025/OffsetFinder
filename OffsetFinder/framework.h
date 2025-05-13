@@ -117,6 +117,7 @@ namespace Offsets
 	inline uintptr_t GetWorldContextFromObject;
 	inline uintptr_t CreateNetDriverLocal;
 	inline uintptr_t SendRequestNow;
+	inline uintptr_t ApplyCharacterCustomization;
 }
 
 
@@ -260,6 +261,27 @@ static void FindSendRequestNow()
 	Offsets::SendRequestNow = Memcury::Scanner::FindStringRef(L"MCP-Profile: Dispatching request to %s").ScanFor({ 0x48,0x89,0x5C }, false).Get();
 }
 
+static void FindApplyCharacterCustomization()
+{
+	Memcury::Scanner Scanner = Memcury::Scanner::FindPattern("48 8B C4 48 89 50 ? 55 57 48 8D 68 ? 48 81 EC ? ? ? ? 80 B9");
+	Offsets::ApplyCharacterCustomization = Scanner.Get();
+
+	if (!Offsets::ApplyCharacterCustomization)
+	{
+		SDK::UFunction* UpdatePlayerCustomCharacterPartsVisualization = (SDK::UFunction*)SDK::UE::Core::GObjects->FindObjectFast("UpdatePlayerCustomCharacterPartsVisualization");
+		if (!UpdatePlayerCustomCharacterPartsVisualization)
+			return void(Offsets::ApplyCharacterCustomization = -1);
+		Scanner = Memcury::Scanner::FindPattern("E8 ? ? ? ? 44 0F B6 E0 EB ? 33 F6");
+
+		if (!Scanner.Get())
+		{
+			Scanner = Memcury::Scanner::FindPattern("E8 ? ? ? ? E9 ? ? ? ? FF 90 ? ? ? ? 49 8B CE");
+		}
+
+		Offsets::ApplyCharacterCustomization = Scanner.RelativeOffset(1).Get();
+	}
+}
+
 static void FindAll()
 {
 	FindGIsClient();
@@ -277,6 +299,7 @@ static void FindAll()
 	FindGetWorldContextFromObject();
 	FindCreateNetDriverLocal();
 	FindSendRequestNow();
+	FindApplyCharacterCustomization();
 }
 
 static bool HasValidate(UFunction* Func)
