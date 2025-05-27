@@ -22,7 +22,9 @@ void Main()
     Append("ActorNetMode", Offsets::ActorNetMode - SDK::UE::Memory::GetBaseAddress(), true);
     Append("ChangeGameSessionId", Offsets::GameSessionIdPatch - SDK::UE::Memory::GetBaseAddress(), true);
     Append("ApplyCharacterCustomization", Offsets::ApplyCharacterCustomization - SDK::UE::Memory::GetBaseAddress(), true);
-
+    Append("CollectGravity", Offsets::CollectGrab - SDK::UE::Memory::GetBaseAddress());
+    Append("PickTeam", Offsets::PickTeam - SDK::UE::Memory::GetBaseAddress());
+    Append("Free", Offsets::Free - SDK::UE::Memory::GetBaseAddress());
     if (Offsets::EngineCreateNetDriver != -1) {
         Append("CreateNetDriver", Offsets::EngineCreateNetDriver - SDK::UE::Memory::GetBaseAddress());
     }
