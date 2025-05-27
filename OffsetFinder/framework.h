@@ -126,7 +126,7 @@ static void FindCollectGravity()
 {
 	if (round(SDK::UE::GetFortniteVersion()) == 17)//wow?
 	{
-		Offsets::KickPlayer = Memcury::Scanner::FindPattern("48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED").Get();// collectgarbage s17??? should be right and fully working proper 1:1 no cap no fake
+		Offsets::CollectGrab = Memcury::Scanner::FindPattern("48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED").Get();// collectgarbage s17??? should be right and fully working proper 1:1 no cap no fake
 	}
 	else
 	{
