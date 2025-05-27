@@ -120,11 +120,12 @@ namespace Offsets
 	inline uintptr_t CreateNetDriverLocal;
 	inline uintptr_t SendRequestNow;
 	inline uintptr_t ApplyCharacterCustomization;
+	inline uintptr_t Free;
 }
 
 static void FindCollectGravity()
 {
-	if (round(SDK::UE::GetFortniteVersion()) == 17)//wow?
+	if (round(SDK::UE::GetFortniteVersion()) == 17)//tested on s14 it get the wrong shit inline uint64_t CollectGravity = 0xFFFF8008582D0000; i want s14 :Sob:
 	{
 		Offsets::CollectGrab = Memcury::Scanner::FindPattern("48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED").Get();// collectgarbage s17??? should be right and fully working proper 1:1 no cap no fake
 	}
@@ -133,6 +134,23 @@ static void FindCollectGravity()
 		//Offsets::KickPlayer = Memcury::Scanner::FindPattern("E8 ? ? ? ? 41 B0 ? 33 D2 48 8B CB E8 ? ? ? ? B0", true).ScanFor({ 0x48, 0x89, 0x5C }, false).Get(); I DONT HAVE THIS !!!!!!!!
 	}
 }
+
+static void FindFreeOffsetAndreuMadeSelfCodeNoCap()
+{
+	if (SDK::UE::GetEngineVersion() <= 420/*.0f*/)
+	{
+		Offsets::Free = Memcury::Scanner::FindPattern("48 85 C9 74 1D 4C 8B 05 ? ? ? ? 4D 85 C0 0F 84").Get();//  Free offset working proper no cap no fake 2025
+	}
+	else if (SDK::UE::GetEngineVersion() >= 421 && SDK::UE::GetEngineVersion() <= 426)
+	{
+		Offsets::Free = Memcury::Scanner::FindPattern("48 85 C9 74 2E 53 48 83 EC 20 48 8B D9").Get();//  Free offset working proper no cap no fake 2025
+	}
+	else if (SDK::UE::GetEngineVersion() >= 427 /*&& SDK::UE::GetEngineVersion() <= 426*/)
+	{
+		Offsets::Free = Memcury::Scanner::FindPattern("48 85 C9 0F 84 ? ? ? ? 53 48 83 EC 20 48 89 7C 24 ? 48 8B D9 48 8B 3D").Get();//  Free offset working proper no cap no fake 2025
+	}
+}
+
 
 static void FindGIsClient()
 {
@@ -296,6 +314,7 @@ static void FindApplyCharacterCustomization()
 
 static void FindAll()
 {
+	FindFreeOffsetAndreuMadeSelfCodeNoCap();
 	FindCollectGravity();
 	FindGIsClient();
 	FindWorldGetNetMode();
