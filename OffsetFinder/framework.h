@@ -125,16 +125,28 @@ namespace Offsets
 
 static void FindCollectGravity()
 {
-	if (round(SDK::UE::GetFortniteVersion()) == 17)//tested on s14 it get the wrong shit inline uint64_t CollectGravity = 0xFFFF8008582D0000; i want s14 :Sob:
+	int fortniteVersion = round(SDK::UE::GetFortniteVersion());
+	int engineVersion = SDK::UE::GetEngineVersion();
+
+	if (fortniteVersion == 17)
 	{
-		Offsets::CollectGrab = Memcury::Scanner::FindPattern("48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED").Get();// collectgarbage s17??? should be right and fully working proper 1:1 no cap no fake
+		Offsets::CollectGrab = Memcury::Scanner::FindPattern(
+			"48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED"
+		).Get();
 	}
-	else
+	else if (fortniteVersion == 14 || engineVersion <= 425)
 	{
-		//Offsets::KickPlayer = Memcury::Scanner::FindPattern("E8 ? ? ? ? 41 B0 ? 33 D2 48 8B CB E8 ? ? ? ? B0", true).ScanFor({ 0x48, 0x89, 0x5C }, false).Get(); I DONT HAVE THIS !!!!!!!!
+		Offsets::CollectGrab = Memcury::Scanner::FindPattern(
+			"40 57 41 56 48 81 EC ? ? ? ? 80 3D ? ? ? ? ? 0F B6 FA 44 8B F1 74 3A 80 3D ? ? ? ? ? 0F 82"
+		).Get();
+	}
+	else if (fortniteVersion > 3.2 || engineVersion <= 420)
+	{
+		Offsets::CollectGrab = Memcury::Scanner::FindPattern(
+			"48 8B C4 57 48 81 EC ? ? ? ? 4C 8B 82 ? ? ? ? 48 8B F9 0F 29 70 E8 0F 29 78 D8"
+		).Get();
 	}
 }
-
 static void FindFreeOffsetAndreuMadeSelfCodeNoCap()
 {
 	if (SDK::UE::GetEngineVersion() <= 420/*.0f*/)
