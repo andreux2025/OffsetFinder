@@ -106,6 +106,8 @@ namespace Offsets
 	inline uintptr_t ActorNetMode;
 	inline uintptr_t GameSessionIdPatch;
 	inline uintptr_t KickPlayer;
+	inline uintptr_t CollectGrab;
+	inline uintptr_t PickTeam;
 	inline uintptr_t NetDriverSetWorld;
 	inline uintptr_t NetDriverInitListen;
 	inline uintptr_t NetDriverGetNetMode;
@@ -120,7 +122,17 @@ namespace Offsets
 	inline uintptr_t ApplyCharacterCustomization;
 }
 
-
+static void FindCollectGravity()
+{
+	if (round(SDK::UE::GetFortniteVersion()) == 17)//wow?
+	{
+		Offsets::KickPlayer = Memcury::Scanner::FindPattern("48 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 55 41 56 41 57 48 8D 68 A1 48 81 EC ? ? ? ? 45 33 ED").Get();// collectgarbage s17??? should be right and fully working proper 1:1 no cap no fake
+	}
+	else
+	{
+		//Offsets::KickPlayer = Memcury::Scanner::FindPattern("E8 ? ? ? ? 41 B0 ? 33 D2 48 8B CB E8 ? ? ? ? B0", true).ScanFor({ 0x48, 0x89, 0x5C }, false).Get(); I DONT HAVE THIS !!!!!!!!
+	}
+}
 
 static void FindGIsClient()
 {
@@ -191,7 +203,7 @@ static void FindNetDriverSetWorld()
 		Offsets::NetDriverSetWorld = __int64(SDK::StaticClassImpl("NetDriver")->GetDefaultObj()->VTable[0x7A]);
 	}
 	else if (SDK::UE::GetEngineVersion() >= 4.26)
-		Offsets::NetDriverSetWorld = Memcury::Scanner::FindPattern("40 55 56 41 56 48 8B EC 48 83 EC ? 48 89 5C 24", true).Get();
+		Offsets::NetDriverSetWorld = Memcury::Scanner::FindPattern("40 5548 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 56 41 56 48 8B EC 48 83 EC ? 48 89 5C 24", true).Get();
 	else
 	{
 		Offsets::NetDriverSetWorld = Memcury::Scanner::FindStringRef(L"AOnlineBeaconHost::InitHost failed", true).ScanFor({ 0xE8 }, false, 1).RelativeOffset(1).Get();
@@ -284,6 +296,7 @@ static void FindApplyCharacterCustomization()
 
 static void FindAll()
 {
+	FindCollectGravity();
 	FindGIsClient();
 	FindWorldGetNetMode();
 	FindActorNetMode();
