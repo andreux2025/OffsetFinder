@@ -203,7 +203,7 @@ static void FindNetDriverSetWorld()
 		Offsets::NetDriverSetWorld = __int64(SDK::StaticClassImpl("NetDriver")->GetDefaultObj()->VTable[0x7A]);
 	}
 	else if (SDK::UE::GetEngineVersion() >= 4.26)
-		Offsets::NetDriverSetWorld = Memcury::Scanner::FindPattern("40 5548 8B C4 48 89 70 08 48 89 78 10 55 41 54 41 56 41 56 48 8B EC 48 83 EC ? 48 89 5C 24", true).Get();
+		Offsets::NetDriverSetWorld = Memcury::Scanner::FindPattern("40 55 56 41 56 48 8B EC 48 83 EC ? 48 89 5C 24", true).Get();
 	else
 	{
 		Offsets::NetDriverSetWorld = Memcury::Scanner::FindStringRef(L"AOnlineBeaconHost::InitHost failed", true).ScanFor({ 0xE8 }, false, 1).RelativeOffset(1).Get();
